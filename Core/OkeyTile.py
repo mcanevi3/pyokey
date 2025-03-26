@@ -1,4 +1,5 @@
 from enum import IntEnum
+import copy
 
 import Console
 import OkeyMath
@@ -67,29 +68,57 @@ class OkeyTile():
 
 class OkeyStack:
     Tiles=[]
-
+    Okey:OkeyTile
+    
     def __init__(self):
         vec=list(range(0,52))+list(range(0,52))
         self.Tiles=[OkeyTile(x) for x in vec]
+        
         random_tile=OkeyTile()
         for tile in self.Tiles:
             if tile.to_int()==random_tile.to_int():
                 tile.Type=OkeyType.OKEY
 
         random_tile.Type=OkeyType.FALSE_OKEY
-        self.Tiles.append(random_tile)
+        self.Tiles.append(copy.deepcopy(random_tile))
         random_tile.Type=OkeyType.FALSE_OKEY
-        self.Tiles.append(random_tile)
+        self.Tiles.append(copy.deepcopy(random_tile))
+
+        random_tile.Type=OkeyType.OKEY
+        self.Okey=random_tile
 
         self.Tiles=OkeyMath.shuffle(self.Tiles)
 
     def print(self):
+        self.Okey.print()
+        print("")
         for tile in self.Tiles:
             tile.print()
+        print("")
 
     def draw_tile(self):
         return self.Tiles.pop()
 
+class OkeyPlayer:
+    Tiles=[]
+    Id:int 
+    Stack:OkeyStack
+
+    def __init__(self,id:int,stack:OkeyStack):
+        self.Id=id
+        self.Stack=stack
+
+    def get_tile(self,count=1):
+        for _ in range(count):
+            self.Tiles.append(self.Stack.draw_tile())
+    
+    def print(self):
+        print(f"Player{self.Id}:",end=" ")
+        [t.print() for t in self.Tiles]
+
 stack=OkeyStack()
 stack.print()
-print("")
+
+player1=OkeyPlayer(id=1,stack=stack)
+player1.get_tile(14)
+player1.print()
