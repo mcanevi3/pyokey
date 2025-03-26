@@ -28,7 +28,7 @@ class OkeyColor(IntEnum):
     BLUE=3
     def to_int(self):
         return self.value
-    
+
 class OkeyType(IntEnum):
     STANDART=0
     FALSE_OKEY=1
@@ -61,22 +61,35 @@ class OkeyTile():
         if self.Type is OkeyType.STANDART:
             Console.print_color(f"{self.Value.to_int()}",color)
         elif self.Type is OkeyType.FALSE_OKEY:
-            Console.print_color(f"{self.Value.to_int()} FalseOkey",color)
+            Console.print_color(f"[{self.Value.to_int()} F]",color)
         else:
             Console.print_color(f"[{self.Value.to_int()}]",color)
 
 class OkeyStack:
-    Tiles=list(range(0,52))+list(range(0,52))
+    Tiles=[]
 
     def __init__(self):
+        vec=list(range(0,52))+list(range(0,52))
+        self.Tiles=[OkeyTile(x) for x in vec]
+        random_tile=OkeyTile()
+        for tile in self.Tiles:
+            if tile.to_int()==random_tile.to_int():
+                tile.Type=OkeyType.OKEY
+
+        random_tile.Type=OkeyType.FALSE_OKEY
+        self.Tiles.append(random_tile)
+        random_tile.Type=OkeyType.FALSE_OKEY
+        self.Tiles.append(random_tile)
+
         self.Tiles=OkeyMath.shuffle(self.Tiles)
 
     def print(self):
         for tile in self.Tiles:
-            OkeyTile(tile).print()
+            tile.print()
 
     def draw_tile(self):
-        return OkeyTile(self.Tiles.pop())
+        return self.Tiles.pop()
 
 stack=OkeyStack()
 stack.print()
+print("")
