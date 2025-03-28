@@ -126,16 +126,17 @@ class OkeyPlayer:
             t.print()
 
     def get_color_pairs(self):
-        # for val in range(1,14):
-        val=2
-        pair = [x for x in self.Tiles if x.Value.to_int() == val]
-        pair_colors=[x.Color for x in pair]
-        unique_color_indices = {val: i for i, val in enumerate(pair_colors)}.values()
-        unique_color_indices=list(unique_color_indices)
-        
-        unique_pair=[pair[i] for i in unique_color_indices]
-        for tile in unique_pair: 
-            tile.print()
+        pairs=[]
+        for val in range(1,14):
+            pair = [x for x in self.Tiles if x.Value.to_int() == val]
+            pair_colors=[x.Color for x in pair]
+            unique_color_indices = {val: i for i, val in enumerate(pair_colors)}.values()
+            unique_color_indices=list(unique_color_indices)
+            
+            unique_pair=[pair[i] for i in unique_color_indices]
+            if len(unique_pair)>2:
+                pairs.append(unique_pair)
+        return pairs
 
 stack=OkeyStack()
 # stack.print()
@@ -144,4 +145,10 @@ player1=OkeyPlayer(id=1,stack=stack)
 player1.get_tile(14)
 player1.print()
 print("")
-player1.get_color_pairs()
+
+pairs=player1.get_color_pairs()
+for pair in pairs:
+    for t in pair:
+        t.print()
+    print(" ")
+

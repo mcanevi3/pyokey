@@ -1,7 +1,7 @@
 import random
 
 def shuffle(vec:list):
-    random.seed(123)
+    random.seed(125)
     vec_new=random.sample(vec, len(vec))
     return vec_new
 
