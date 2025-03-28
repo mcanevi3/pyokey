@@ -116,9 +116,32 @@ class OkeyPlayer:
         print(f"Player{self.Id}:",end=" ")
         [t.print() for t in self.Tiles]
 
+    def sort_tiles(self):
+        okey=stack.Okey
+        vec=[t.Value.to_int() for t in self.Tiles]
+        sorted_indices = sorted(range(len(vec)), key=lambda i: vec[i])
+        tiles=[self.Tiles[i] for i in sorted_indices]
+
+        for t in tiles:
+            t.print()
+
+    def get_color_pairs(self):
+        # for val in range(1,14):
+        val=2
+        pair = [x for x in self.Tiles if x.Value.to_int() == val]
+        pair_colors=[x.Color for x in pair]
+        unique_color_indices = {val: i for i, val in enumerate(pair_colors)}.values()
+        unique_color_indices=list(unique_color_indices)
+        
+        unique_pair=[pair[i] for i in unique_color_indices]
+        for tile in unique_pair: 
+            tile.print()
+
 stack=OkeyStack()
-stack.print()
+# stack.print()
 
 player1=OkeyPlayer(id=1,stack=stack)
 player1.get_tile(14)
 player1.print()
+print("")
+player1.get_color_pairs()
