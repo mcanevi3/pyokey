@@ -99,6 +99,25 @@ class OkeyStack:
     def draw_tile(self):
         return self.Tiles.pop()
 
+    def from_str(self,strval:str):
+        self.Tiles=[]
+        for v in strval.split(" "):
+            col=v[-1]
+            val=int(v[:-1])
+
+            color=OkeyColor.RED
+            if col=="y":
+                color=OkeyColor.YELLOW
+            elif col=="k":
+                color=OkeyColor.BLACK
+            elif col=="b":
+                color=OkeyColor.BLUE
+            
+            tile=OkeyTile()
+            tile.Color=color
+            tile.Value=OkeyValue(val-1)
+            self.Tiles.append(tile)
+
 class OkeyPlayer:
     Tiles=[]
     Id:int 
@@ -139,7 +158,7 @@ class OkeyPlayer:
         return pairs
 
 stack=OkeyStack()
-# stack.print()
+stack.from_str("1r 3b 5b 12r 4k 2y 3r 2y 13r 2b 2r 4b 4r 2k")
 
 player1=OkeyPlayer(id=1,stack=stack)
 player1.get_tile(14)
